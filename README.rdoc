@@ -1,7 +1,7 @@
 
 = itunes-observer
 
- Observe iTunes and notify when starting playng track
+Observe iTunes and notify when starting playng track
 
 == Description
 
