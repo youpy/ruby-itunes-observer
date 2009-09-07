@@ -25,6 +25,10 @@
   puts '%s - %s' % [result['Artist'], result['Name']]
  }.run
 
+== See Also
+
+* http://blog.8-p.info/articles/2006/12/24/rubycocoa-skype-itunes
+
 == Copyright
 
 Author::    youpy <youpy@buycheapviagraonlinenow.com>
