@@ -2,16 +2,16 @@
 
 Gem::Specification.new do |s|
   s.name = %q{itunes-observer}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["youpy"]
   s.autorequire = %q{}
-  s.date = %q{2009-09-07}
+  s.date = %q{2009-09-08}
   s.description = %q{}
   s.email = %q{youpy@buycheapviagraonlinenow.com}
   s.extra_rdoc_files = ["README.rdoc", "ChangeLog"]
-  s.files = ["README.rdoc", "ChangeLog", "Rakefile", "spec/itunes_observer_spec.rb", "spec/spec.opts", "spec/spec_helper.rb", "lib/itunes_observer.rb"]
+  s.files = ["README.rdoc", "ChangeLog", "Rakefile", "spec/itunes_observer_spec.rb", "spec/spec.opts", "spec/spec_helper.rb", "lib/itunes_observer.rb", "examples/love_daemon.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://itunes-observer.rubyforge.org}
   s.rdoc_options = ["--title", "itunes-observer documentation", "--charset", "utf-8", "--opname", "index.html", "--line-numbers", "--main", "README.rdoc", "--inline-source", "--exclude", "^(examples|extras)/"]
