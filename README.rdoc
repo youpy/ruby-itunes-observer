@@ -1,0 +1,32 @@
+
+= itunes-observer
+
+
+== Description
+
+
+== Installation
+
+=== Archive Installation
+
+ rake install
+
+=== Gem Installation
+
+ gem sources -a http://gems.github.com/  
+ gem install youpy-itunes-observer
+
+== Features/Problems
+
+
+== Synopsis
+
+ ITunesObserver.new {|result|
+  puts '%s - %s' % [result['Artist'], result['Name']]
+ }.run
+
+== Copyright
+
+Author::    youpy <youpy@buycheapviagraonlinenow.com>
+Copyright:: Copyright (c) 2009 youpy
+License:: MIT
