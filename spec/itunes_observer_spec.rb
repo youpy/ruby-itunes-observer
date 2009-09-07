@@ -9,7 +9,7 @@ OSX.require_framework 'ScriptingBridge'
 describe ITunesObserver do
   before do
     @itunes = SBApplication.applicationWithBundleIdentifier_("com.apple.iTunes")
-    raise 'iTunes should be running' unless @itunes.isRunning
+    raise 'iTunes must be running' unless @itunes.isRunning
     @result = nil
     @observer = ITunesObserver.new do |result|
       @result = result
