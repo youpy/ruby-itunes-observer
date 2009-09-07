@@ -19,8 +19,10 @@ class ITunesObserver
   # based on http://blog.8-p.info/articles/2006/12/24/rubycocoa-skype-itunes
   class Observer < OSX::NSObject
     def onPlayerInfo(info)
-      result = Result.new(info.userInfo)
-      @callback.call(result)
+      if info.userInfo['Player State'] == 'Playing'
+        result = Result.new(info.userInfo)
+        @callback.call(result)
+      end
     end
 
     def observe(&callback)
