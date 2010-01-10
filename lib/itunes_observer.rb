@@ -41,7 +41,12 @@ class ITunesObserver
     end
 
     def [](key)
-      @attributes[key]
+      case value = @attributes[key]
+      when OSX::NSCFString
+        value.to_s
+      else
+        value
+      end
     end
   end
 end

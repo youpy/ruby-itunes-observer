@@ -27,5 +27,6 @@ describe ITunesObserver do
     @observer.run(1)
     @result.should_not be_nil
     @result['Name'].should_not be_nil
+    @result['Player State'].should eql('Playing')
   end
 end
