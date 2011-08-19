@@ -1,7 +1,7 @@
 require 'osx/cocoa'
 
 class ITunesObserver
-  VERSION = '0.0.2'
+  VERSION = '0.0.3'
 
   def initialize(&callback)
     observer = Observer.alloc.init
