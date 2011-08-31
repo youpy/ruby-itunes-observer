@@ -4,6 +4,7 @@
 # OSX only
 
 require 'rubygems'
+require 'itunes_observer'
 require 'lastfm'
 require 'pit'
 
@@ -33,16 +34,6 @@ def main
   end
 
   lastfm.session = session
-
-  exit if fork
-  Process.setsid
-  File.open("/dev/null") {|f|
-    STDIN.reopen f
-    STDOUT.reopen f
-    STDERR.reopen f
-  }
-
-  require 'itunes_observer'
 
   ITunesObserver.new {|result|
     name = result['Name']
