@@ -23,14 +23,14 @@ def main
   unless session = config['session']
     token = lastfm.auth.get_token
     auth(config['api_key'], token)
-    session = lastfm.auth.get_session(token)
+    session = lastfm.auth.get_session(token)['key']
     Pit.set('last.fm', :data => {
         "session" => session
       }.merge(config))
 
     puts "Session key was generated."
 
-    return
+    exit
   end
 
   lastfm.session = session
