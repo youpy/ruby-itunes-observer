@@ -1,10 +1,9 @@
 
 = itunes-observer
 
-Observe iTunes and notify when starting playng track
+Observe iTunes and notify when playing/stopping/pausing
 
 == Description
-
 
 == Installation
 
@@ -22,7 +21,8 @@ Observe iTunes and notify when starting playng track
 
 == Synopsis
 
- ITunesObserver.new {|result|
+ observer = ITunesObserver.new
+ observer.on_play {|result|
   puts '%s - %s' % [result['Artist'], result['Name']]
  }.run
 
