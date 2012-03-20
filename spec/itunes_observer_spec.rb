@@ -27,15 +27,9 @@ describe ITunesObserver do
         result = result
       end
 
-      EM.run do
+      run_loop(observer) do
         @itunes.playpause
-
-        EM::Timer.new(1) do
-          EM.stop
-        end
       end
-
-      observer.run(1)
 
       result.should_not be_nil
       result['Name'].should_not be_nil
@@ -53,16 +47,12 @@ describe ITunesObserver do
         result = result
       end
 
-      EM.run do
+      run_loop(observer) do
         @itunes.playpause
-
-        EM::Timer.new(1) do
-          @itunes.stop
-          EM.stop
-        end
+        @itunes.stop
       end
 
-      observer.run(0)
+      observer.finish
 
       result.should_not be_nil
       result['Name'].should_not be_nil
@@ -80,15 +70,9 @@ describe ITunesObserver do
         result = result
       end
 
-      EM.run do
+      run_loop(observer) do
         @itunes.playpause
-
-        EM::Timer.new(1) do
-          EM.stop
-        end
       end
-
-      observer.run(0)
 
       result.should_not be_nil
       result['Name'].should_not be_nil
@@ -106,21 +90,37 @@ describe ITunesObserver do
         result = result
       end
 
-      EM.run do
+      run_loop(observer) do
         @itunes.playpause
 
         EM::Timer.new(1) do
           @itunes.pause
-          EM.stop
         end
       end
 
       observer.run(0)
+      observer.finish
 
       result.should_not be_nil
       result['Name'].should_not be_nil
       result['Player State'].should eql('Paused')
       result['Total Time'].should be_kind_of(Fixnum)
     end
+  end
+
+  def run_loop(observer)
+    EM.run do
+      yield
+
+      EM::Timer.new(3) do
+        EM.stop
+      end
+
+      EM::add_periodic_timer(1) do
+        observer.run(0)
+      end
+    end
+  ensure
+    observer.finish
   end
 end
