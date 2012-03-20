@@ -24,7 +24,8 @@ Observe iTunes and notify when playing/stopping/pausing
  observer = ITunesObserver.new
  observer.on_play {|result|
   puts '%s - %s' % [result['Artist'], result['Name']]
- }.run
+ }
+ observer.run
 
 == See Also
 
