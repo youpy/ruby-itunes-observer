@@ -4,9 +4,6 @@ require 'rake/clean'
 require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
-require 'rake/rdoctask'
-require 'rake/contrib/rubyforgepublisher'
-require 'rake/contrib/sshpublisher'
 require 'spec/rake/spectask'
 require 'fileutils'
 include FileUtils
@@ -40,7 +37,6 @@ task :package => [:clean]
 Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', "spec/spec.opts"]
   t.spec_files = FileList['spec/*_spec.rb']
-  t.rcov = true
 end
 
 spec = Gem::Specification.new do |s|
@@ -87,21 +83,6 @@ end
 
 task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
-end
-
-
-Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'html'
-  rdoc.options += RDOC_OPTS
-  rdoc.template = "resh"
-  #rdoc.template = "#{ENV['template']}.rb" if ENV['template']
-  if ENV['DOC_FILES']
-    rdoc.rdoc_files.include(ENV['DOC_FILES'].split(/,\s*/))
-  else
-    rdoc.rdoc_files.include('README.rdoc', 'ChangeLog')
-    rdoc.rdoc_files.include('lib/**/*.rb')
-    rdoc.rdoc_files.include('ext/**/*.c')
-  end
 end
 
 desc "Show information about the gem"
