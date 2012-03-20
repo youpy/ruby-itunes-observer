@@ -59,6 +59,7 @@ spec = Gem::Specification.new do |s|
   s.test_files        = Dir["test/test_*.rb"]
 
   #s.add_dependency('')
+  s.add_development_dependency('eventmachine')
   #s.required_ruby_version = '>= 1.8.2'
 
   s.files = %w(README.rdoc ChangeLog Rakefile) +

@@ -3,9 +3,28 @@ require 'osx/cocoa'
 class ITunesObserver
   VERSION = '0.0.3'
 
+  STATES = {
+    :playing => 'Playing',
+    :paused  => 'Paused',
+    :stopped => 'Stopped'
+  }
+
   def initialize(&callback)
-    observer = Observer.alloc.init
-    observer.observe(&callback)
+    @observer = Observer.alloc.init
+
+    add_callback(STATES[:playing], &callback)
+  end
+
+  def on_play(&callback)
+    add_callback(STATES[:playing], &callback)
+  end
+
+  def on_pause(&callback)
+    add_callback(STATES[:paused], &callback)
+  end
+
+  def on_stop(&callback)
+    add_callback(STATES[:stopped], &callback)
   end
 
   def run(stop_after = nil)
@@ -14,24 +33,54 @@ class ITunesObserver
     else
       OSX::NSRunLoop.currentRunLoop.run
     end
+  ensure
+    @observer.finish
+  end
+
+  private
+
+  def add_callback(state, &callback)
+    if callback
+      @observer.add_callback(state, &callback)
+    end
   end
 
   # based on http://blog.8-p.info/articles/2006/12/24/rubycocoa-skype-itunes
   class Observer < OSX::NSObject
-    def onPlayerInfo(info)
-      if info.userInfo['Player State'] == 'Playing'
-        result = Result.new(info.userInfo)
-        @callback.call(result)
-      end
-    end
+    def initialize
+      @callbacks = {}
 
-    def observe(&callback)
-      @callback = callback
-      center = OSX::NSDistributedNotificationCenter.defaultCenter
-      center.addObserver_selector_name_object_(self,
+      notification_centor.addObserver_selector_name_object_(self,
         'onPlayerInfo:',
         'com.apple.iTunes.playerInfo',
         'com.apple.iTunes.player')
+    end
+
+    def onPlayerInfo(info)
+      result = Result.new(info.userInfo)
+
+      STATES.each do |k, state|
+        if info.userInfo['Player State'] == state
+          (@callbacks[state] || []).each do |callback|
+            callback.call(result)
+          end
+        end
+      end
+    end
+
+    def add_callback(state, &callback)
+      @callbacks[state] ||= []
+      @callbacks[state] << callback
+    end
+
+    def finish
+      notification_centor.removeObserver_name_object_(self,
+        'com.apple.iTunes.playerInfo',
+        'com.apple.iTunes.player')
+    end
+
+    def notification_centor
+      OSX::NSDistributedNotificationCenter.defaultCenter
     end
   end
 
@@ -46,6 +95,8 @@ class ITunesObserver
         value.to_s
       when OSX::NSCFString
         value.to_s
+      when OSX::NSNumber
+        value.to_i
       else
         value
       end
