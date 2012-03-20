@@ -33,7 +33,9 @@ class ITunesObserver
     else
       OSX::NSRunLoop.currentRunLoop.run
     end
-  ensure
+  end
+
+  def finish
     @observer.finish
   end
 
