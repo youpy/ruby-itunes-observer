@@ -51,11 +51,13 @@ class ITunesObserver
   class Observer < OSX::NSObject
     def initialize
       @callbacks = {}
+      @name = 'com.apple.iTunes.playerInfo'
+      @object = 'com.apple.iTunes.player'
 
       notification_centor.addObserver_selector_name_object_(self,
         'onPlayerInfo:',
-        'com.apple.iTunes.playerInfo',
-        'com.apple.iTunes.player')
+        @name,
+        @object)
     end
 
     def onPlayerInfo(info)
@@ -77,8 +79,8 @@ class ITunesObserver
 
     def finish
       notification_centor.removeObserver_name_object_(self,
-        'com.apple.iTunes.playerInfo',
-        'com.apple.iTunes.player')
+        @name,
+        @object)
     end
 
     def notification_centor
