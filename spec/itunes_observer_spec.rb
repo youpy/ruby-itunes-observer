@@ -4,14 +4,12 @@ require 'rubygems'
 require 'spec_helper'
 require 'osx/cocoa'
 require 'eventmachine'
-
-include OSX
-OSX.require_framework 'ScriptingBridge'
+require 'appscript'
 
 describe ITunesObserver do
   before do
-    @itunes = SBApplication.applicationWithBundleIdentifier_("com.apple.iTunes")
-    raise 'iTunes must be running' unless @itunes.isRunning
+    @itunes = Appscript.app('iTunes')
+    @itunes.run
     @itunes.stop
   end
 
@@ -28,7 +26,7 @@ describe ITunesObserver do
       end
 
       run_loop(observer) do
-        @itunes.playpause
+        @itunes.playlists["Music"].tracks[1].play
       end
 
       result.should_not be_nil
@@ -48,11 +46,12 @@ describe ITunesObserver do
       end
 
       run_loop(observer) do
-        @itunes.playpause
-        @itunes.stop
-      end
+        @itunes.playlists["Music"].tracks[1].play
 
-      observer.finish
+        EM::Timer.new(1) do
+          @itunes.stop
+        end
+      end
 
       result.should_not be_nil
       result['Name'].should_not be_nil
@@ -71,7 +70,7 @@ describe ITunesObserver do
       end
 
       run_loop(observer) do
-        @itunes.playpause
+        @itunes.playlists["Music"].tracks[1].play
       end
 
       result.should_not be_nil
