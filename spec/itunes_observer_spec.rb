@@ -54,9 +54,7 @@ describe ITunesObserver do
       end
 
       result.should_not be_nil
-      result['Name'].should_not be_nil
       result['Player State'].should eql('Stopped')
-      result['Total Time'].should be_kind_of(Fixnum)
     end
   end
 
@@ -90,15 +88,12 @@ describe ITunesObserver do
       end
 
       run_loop(observer) do
-        @itunes.playpause
+        @itunes.playlists["Music"].tracks[1].play
 
         EM::Timer.new(1) do
           @itunes.pause
         end
       end
-
-      observer.run(0)
-      observer.finish
 
       result.should_not be_nil
       result['Name'].should_not be_nil
